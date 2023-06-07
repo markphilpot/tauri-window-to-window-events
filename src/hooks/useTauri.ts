@@ -15,8 +15,12 @@ export default function useTauri() {
   const sendMessage = useCallback(
     (event: string, payload: string, label: string) => {
       console.log("Sending message to ", label);
-      const webview = new WebviewWindow(label);
-      webview.emit(event, payload);
+      const webview = WebviewWindow.getByLabel(label);
+      if (webview) {
+        webview.emit(event, payload);
+      } else {
+        console.error("Webview not found");
+      }
     },
     []
   );
